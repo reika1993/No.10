@@ -1,8 +1,10 @@
 package com.no10;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CatService {
@@ -12,37 +14,32 @@ public class CatService {
         this.catMapper = catMapper;
     }
 
-    public List<Cat> findAll() {
-        List<Cat> cats = catMapper.findAll();
-        return cats;
 
-    }
+    public List<Cat> findCat(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String sex,
+            @RequestParam(required = false) Integer age) throws CatNotFoundException {
 
-    public List<Cat> findByName(String name) {
-        List<Cat> cats = catMapper.findByName(name);
-        if (cats.isEmpty()) {
-            throw new CatNotFoundException(name + "という名前のねこは存在しません。");
+        if (Objects.nonNull(name)) {
+            List<Cat> catsByName = catMapper.findByName(name);
+            if (catsByName.isEmpty())
+                throw new CatNotFoundException(name + "という名前のねこは存在しません。");
+            return catsByName;
         }
 
-        return cats;
-    }
-
-    public List<Cat> findBySex(String sex) {
-        List<Cat> cats = catMapper.findBySex(sex);
-        if (cats.isEmpty()) {
-            throw new CatNotFoundException("オスかメスを入力してください。");
+        if (Objects.nonNull(sex)) {
+            List<Cat> catsBySex = catMapper.findBySex(sex);
+            if (catsBySex.isEmpty())
+                throw new CatNotFoundException("オスかメスを入力してください.");
+            return catsBySex;
         }
 
-        return cats;
-    }
-
-    public List<Cat> findByAge(int age) {
-        List<Cat> cats = catMapper.findByAge(age);
-        if (cats.isEmpty()) {
-            throw new CatNotFoundException("現在" + age + "才のねこはいません。");
+        if (Objects.nonNull(age)) {
+            List<Cat> catsByAge = catMapper.findByAge(age);
+            if (catsByAge.isEmpty())
+                throw new CatNotFoundException("現在" + age + "才のねこはいません。");
+            return catsByAge;
         }
-        return cats;
+        return catMapper.findAll();
     }
-
-
 }

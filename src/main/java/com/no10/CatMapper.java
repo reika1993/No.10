@@ -17,8 +17,6 @@ public interface CatMapper {
     List<Cat> findBySex(String sex);
 
     @Select({"SELECT * FROM cats WHERE age = #{age}"})
-    List<Cat> findByAge(int age);
-
+    List<Cat> findByAge(Integer age);
 
 }
-
