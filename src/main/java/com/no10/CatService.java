@@ -1,7 +1,6 @@
 package com.no10;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,16 +14,14 @@ public class CatService {
     }
 
 
-    public List<Cat> findCat(
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) String sex,
-            @RequestParam(required = false) Integer age) throws CatNotFoundException {
+    public List<Cat> findCat(String name, String sex, Integer age) throws CatNotFoundException {
 
         if (Objects.nonNull(name)) {
             List<Cat> catsByName = catMapper.findByName(name);
             if (catsByName.isEmpty())
                 throw new CatNotFoundException(name + "という名前のねこは存在しません。");
             return catsByName;
+
         }
 
         if (Objects.nonNull(sex)) {
@@ -40,6 +37,8 @@ public class CatService {
                 throw new CatNotFoundException("現在" + age + "才のねこはいません。");
             return catsByAge;
         }
+
+
         return catMapper.findAll();
     }
 }
