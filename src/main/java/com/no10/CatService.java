@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Service
 public class CatService {
-    private final CatMapper catMapper;
+    private static CatMapper catMapper;
 
     public CatService(CatMapper catMapper) {
         this.catMapper = catMapper;
@@ -37,8 +37,13 @@ public class CatService {
                 throw new CatNotFoundException("現在" + age + "才のねこはいません。");
             return catsByAge;
         }
-
-
         return catMapper.findAll();
     }
+
+    public Cat insert(String name, String sex, Integer age) {
+        Cat cat = new Cat(name, sex, age);
+        catMapper.insert(cat);
+        return cat;
+    }
 }
+
