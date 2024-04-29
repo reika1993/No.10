@@ -1,9 +1,10 @@
 version: '3.8'
 services:
   db:
-    build: .
-    container_name: docker-mysql-hands-on
     platform: linux/x86_64
+    build: .
+    image: mysql:5.7
+    container_name: docker-mysql-hands-on
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:

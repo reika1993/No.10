@@ -1,25 +1,23 @@
 package com.no10;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-
+@RestController
+@Validated
 public class CatController {
-
-
     private final CatService catService;
 
     public CatController(CatService catService) {
         this.catService = catService;
     }
+
 
     @GetMapping("/cats")
     public List<Cat> getCat(@RequestParam(required = false) String name,
@@ -30,6 +28,7 @@ public class CatController {
         }
 
         return catService.findCat(name, sex, age);
+
     }
 
     @PostMapping("/cats")
@@ -39,10 +38,6 @@ public class CatController {
         CatResponse body = new CatResponse("cat.created");
         return ResponseEntity.created(location).body(body);
     }
-
 }
-
-
-
 
 
